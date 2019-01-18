@@ -1,6 +1,8 @@
 import time
 import threading
 
+# TODO: ASAP, use sched module
+
 
 class Scheduler(object):
     """Scheduler
