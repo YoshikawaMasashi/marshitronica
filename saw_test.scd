@@ -34,3 +34,27 @@ Out.ar(1, osc[1]);
 Synth.tail(~g, "saw", ["amp", 0.75, "sus", 1, "bus", 152, "freq", 523.251, "fmod", 0.5, "pan", 1, "rate", 1]);
 Synth.tail(~g, "makeSound", ["bus", 152, "sus", 1]);
 )
+
+(
+SynthDef.new(\saw,
+{|amp=1, sus=1, pan=0, freq=0, vib=0, fmod=0, rate=0, bus=0|
+var osc, env;
+freq = In.kr(bus, 1);
+freq = [freq, freq+fmod];
+amp=(amp / 8);
+osc=Saw.ar(freq);
+osc=(osc * amp);
+env=EnvGen.ar(Env(times: [0.01, (sus - 0.01), 0.01],levels: [0, 1, 1, 0],curve: 'lin'), doneAction: 0);
+osc=(osc * env);
+osc = Mix(osc) * 0.5;
+osc = Pan2.ar(osc, pan);
+	Out.ar(0, osc)}).add;
+)
+
+
+
+~g = Group.head(s);
+
+(
+Synth.tail(~g, "saw", ["amp", 0.75, "sus", 1, "bus", 152, "freq", 523.251, "fmod", 0.5, "pan", 1, "rate", 1]);
+)
