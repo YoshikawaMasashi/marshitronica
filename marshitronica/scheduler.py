@@ -1,7 +1,7 @@
 import time
 import threading
 
-# TODO: ASAP, use sched module
+# TODO: ASAP, use sched module https://docs.python.jp/3/library/sched.html
 
 
 class Scheduler(object):
