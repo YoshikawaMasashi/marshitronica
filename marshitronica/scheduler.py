@@ -12,6 +12,7 @@ class Scheduler(object):
         self.step_second = 0.0001
         self.queue = collections.OrderedDict()
         self.th = None
+        self.bpm = 120
 
     def __run(self):
         while self.is_running:
@@ -39,7 +40,23 @@ class Scheduler(object):
         self.is_running = False
         self.start_time = None
 
-    def add_callable(self, t, callable):
+    def time_to_beats(self, time):
+        return time * self.bpm / 60
+
+    def beats_to_time(self, beats):
+        return beats * 60 / self.bpm
+
+    @property
+    def now(self):
+        return time.time() - self.start_time
+
+    @property
+    def now_beats(self):
+        return self.time_to_beats(self.now)
+
+    def add_callable(self, beats, callable):
+        t = self.beats_to_time(beats)
+
         if t < time.time() - self.start_time:
             return
 

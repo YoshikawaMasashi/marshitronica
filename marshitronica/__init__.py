@@ -6,6 +6,9 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 from marshitronica.scheduler import Scheduler  # NOQA
+from marshitronica.phrase import Phrase  # NOQA
+from marshitronica.track import Track  # NOQA
+from marshitronica.phrase import Note  # NOQA
 
 
 # load synthdef
