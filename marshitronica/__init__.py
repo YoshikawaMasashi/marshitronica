@@ -21,3 +21,6 @@ for path in glob.glob(str(module_path / 'scd/*.scd')):
     msg.add_arg(path, arg_type='s')
     msg = msg.build()
     client.send(msg)
+
+NEXT_BUS_ID = 4
+NEXT_SYNTH_ID = 10000

@@ -1,4 +1,7 @@
 import numpy as np
+from pythonosc import osc_message_builder
+
+import marshitronica
 
 
 class Track(object):
@@ -6,6 +9,21 @@ class Track(object):
         self.phrase = None
         self.length = None
         self.scheduler = None
+
+        self.bus_id = marshitronica.NEXT_BUS_ID
+        marshitronica.NEXT_BUS_ID += 2
+
+        msg = osc_message_builder.OscMessageBuilder(address='/s_new')
+        msg.add_arg("output", arg_type='s')
+        msg.add_arg(marshitronica.NEXT_SYNTH_ID, arg_type='i')
+        msg.add_arg(0, arg_type='i')
+        msg.add_arg(0, arg_type='i')
+        msg.add_arg("in", arg_type='s')
+        msg.add_arg(self.bus_id, arg_type='i')
+        msg = msg.build()
+        marshitronica.client.send(msg)
+
+        marshitronica.NEXT_SYNTH_ID += 1
 
     def set_phrase(self, phrase):
         self.phrase = phrase
@@ -68,7 +86,27 @@ class Track(object):
 
         self.scheduler.add_callable(scheduler_beats, f)
 
+    def pitch_to_freq(self, pitch):
+        return 440 * 2 ** ((pitch - 69) / 12)
+
     def send_osc(self, beats):
         notes = self.phrase.notes[beats]
         for note in notes:
-            print(note.pitch)
+            msg = osc_message_builder.OscMessageBuilder(address='/s_new')
+            msg.add_arg("smooth", arg_type='s')
+            msg.add_arg(marshitronica.NEXT_SYNTH_ID, arg_type='i')
+            msg.add_arg(0, arg_type='i')
+            msg.add_arg(0, arg_type='i')
+            msg.add_arg("out", arg_type='s')
+            msg.add_arg(self.bus_id, arg_type='i')
+            msg.add_arg("amp", arg_type='s')
+            msg.add_arg(note.amp, arg_type='f')
+            msg.add_arg("sustain", arg_type='s')
+            msg.add_arg(
+                self.scheduler.beats_to_time(note.duration), arg_type='f')
+            msg.add_arg("freq", arg_type='s')
+            msg.add_arg(self.pitch_to_freq(note.pitch), arg_type='f')
+            msg = msg.build()
+            marshitronica.client.send(msg)
+
+            marshitronica.NEXT_SYNTH_ID += 1
