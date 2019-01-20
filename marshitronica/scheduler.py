@@ -39,8 +39,11 @@ class Scheduler(object):
         self.is_running = False
         self.start_time = None
 
-    def add_callable(self, time, callable):
-        if time not in self.queue:
-            self.queue[time] = [callable]
+    def add_callable(self, t, callable):
+        if t < time.time() - self.start_time:
+            return
+
+        if t not in self.queue:
+            self.queue[t] = [callable]
         else:
             self.queue.append(callable)
