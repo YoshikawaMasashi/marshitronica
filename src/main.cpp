@@ -1,5 +1,7 @@
 #include <pybind11/pybind11.h>
 
+#include "./scheduler.h"
+
 int add(int i, int j) {
     return i + j;
 }
