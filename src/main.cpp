@@ -2,6 +2,7 @@
 
 #include "./scheduler.h"
 #include "./note.h"
+#include "./phrase.h"
 
 int add(int i, int j) {
     return i + j;
