@@ -6,4 +6,4 @@ SynthDef.new("pitchShift",
 		sig = PitchShift.ar(sig, 0.2, 0.5, 0, 0.0001);
 		Out.ar(out, sig);
 	}
-).add;
+).store();

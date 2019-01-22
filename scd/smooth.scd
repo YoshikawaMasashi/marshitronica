@@ -5,4 +5,4 @@ SynthDef("smooth",
 		sig = SinOsc.ar(freq, 0, amp) * EnvGen.kr(Env.linen(0.05, sustain, 0.1), doneAction: Done.freeSelf);
 		Out.ar(bus, sig ! 2);
 	}
-).add;
+).store();

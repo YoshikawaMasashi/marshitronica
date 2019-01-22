@@ -5,4 +5,4 @@ SynthDef.new("output",
 		osc = In.ar(in, 2);
 		Out.ar(0, osc);
 	}
-).add;
+).store();
