@@ -15,4 +15,5 @@ class Track {
   int bus_id;
  public:
   Track();
+  void set_phrase(Phrase);
 };
