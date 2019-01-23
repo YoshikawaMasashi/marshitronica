@@ -1,4 +1,4 @@
-// Copyright[2019] marshi(masashi yoshikawa)
+// Copyright[2019] <marshi(masashi yoshikawa)>
 #pragma once
 
 #include <chrono>

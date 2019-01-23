@@ -1,3 +1,4 @@
+// Copyright[2019] <marshi(masashi yoshikawa)>
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 

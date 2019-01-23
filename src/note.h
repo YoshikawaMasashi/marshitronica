@@ -1,11 +1,11 @@
+// Copyright[2019] <marshi(masashi yoshikawa)>
 #pragma once
 
-class Note
-{
-private:
+class Note {
+ private:
   double pitch;
   double duration;
   double amp;
-public:
+ public:
   Note(double, double, double);
 };
