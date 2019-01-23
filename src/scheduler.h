@@ -1,14 +1,12 @@
 // Copyright[2019] marshi(masashi yoshikawa)
+#pragma once
 
-#ifndef SRC_SCHEDULER_H_
-#define SRC_SCHEDULER_H_
 #include <chrono>
 #include <map>
 #include <iostream>
 #include <thread>
 #include <mutex>
 #include <vector>
-#endif  // SRC_SCHEDULER_H_
 
 typedef void (*Task)();
 

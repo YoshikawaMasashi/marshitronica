@@ -3,6 +3,8 @@
 #include "./scheduler.h"
 #include "./note.h"
 #include "./phrase.h"
+#include "./track.h"
+#include "./common.h"
 
 int add(int i, int j) {
     return i + j;

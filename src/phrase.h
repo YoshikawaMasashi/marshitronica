@@ -1,4 +1,6 @@
 // TODO(marshi): rethinking header definition
+#pragma once
+
 #include <map>
 #include <vector>
 #include "note.h"
