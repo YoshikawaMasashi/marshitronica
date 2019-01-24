@@ -8,4 +8,7 @@ class Note {
   double amp;
  public:
   Note(double, double, double);
+  double get_pitch();
+  double get_duration();
+  double get_amp();
 };

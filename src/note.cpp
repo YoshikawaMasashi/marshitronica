@@ -6,3 +6,15 @@ Note::Note(double pitch, double duration, double amp) {
   this->duration = duration;
   this->amp = amp;
 }
+
+double Note::get_pitch() {
+  return this->pitch;
+}
+
+double Note::get_duration() {
+  return this->duration;
+}
+
+double Note::get_amp() {
+  return this->amp;
+}

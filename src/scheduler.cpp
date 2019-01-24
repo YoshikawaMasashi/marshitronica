@@ -18,11 +18,11 @@ void Scheduler::schedule() {
       // TODO(marshi): no auto use
       auto next = this->task_queue.begin();
       double next_beats = next->first;
-      std::vector<Task> next_tasks = next->second;
+      std::vector<std::function<void(void)>> next_tasks = next->second;
       if (next_beats < this->now_beats()) {
         // TODO(marshi): threading
-        for (Task task : next_tasks) {
-          (*task)();
+        for (std::function<void(void)> task : next_tasks) {
+          task();
         }
         this->task_queue.erase(next_beats);
         continue;
@@ -67,7 +67,7 @@ double Scheduler::now_beats() {
   return this->seconds_to_beats(this->now_seconds());
 }
 
-void Scheduler::add_task(double beats, Task task) {
+void Scheduler::add_task(double beats, std::function<void(void)> task) {
   if (beats < this->now_beats()) {
     return;
   }
@@ -76,7 +76,7 @@ void Scheduler::add_task(double beats, Task task) {
   if (this->task_queue.find(beats) != this->task_queue.end()) {
     this->task_queue.at(beats).push_back(task);
   } else {
-    this->task_queue.insert(std::make_pair(beats, std::vector<Task>({task})));
+    this->task_queue.insert(std::make_pair(beats, std::vector<std::function<void(void)>>({task})));
   }
   this->task_queue_mutex.unlock();
 }
