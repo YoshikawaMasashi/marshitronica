@@ -9,9 +9,10 @@
 
 class Phrase {
  private:
+  double length;
  public:
   Phrase();
-  std::map<double, std::vector<Note>> notes;
-  double length;
   void add_note(double, Note);
+  double get_length();
+  std::map<double, std::vector<Note>> notes;
 };

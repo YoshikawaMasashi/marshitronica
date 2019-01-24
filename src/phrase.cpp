@@ -12,3 +12,7 @@ void Phrase::add_note(double beats, Note note) {
     this->notes.insert(std::make_pair(beats, std::vector<Note>({note})));
   }
 }
+
+double Phrase::get_length() {
+  return this->length;
+}
