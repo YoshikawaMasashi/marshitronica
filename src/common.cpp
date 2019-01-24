@@ -1,10 +1,32 @@
 // Copyright[2019] <marshi(masashi yoshikawa)>
 #include "./common.h"
 
-int next_bus_id = 4;
-int next_synth_id = 10000;
-UdpTransmitSocket transmitSocket(IpEndpointName("127.0.0.1", 57110));
 
-double pitch_to_freq(double pitch) {
-  return pow(440 * 2, ((pitch - 69) / 12));
+Common::Common() {
+  this->next_bus_id = 4;
+  this->next_synth_id = 10000;
+  this->transmit_socket = new UdpTransmitSocket(
+    IpEndpointName("127.0.0.1", 57110));
+}
+
+int Common::get_next_bus_id() {
+  return this->next_bus_id;
+}
+
+int Common::get_next_synth_id() {
+  return this->next_synth_id;
+}
+
+int Common::increment_next_bus_id() {
+  this->next_bus_id += 2;
+  return this->next_bus_id;
+}
+
+int Common::increment_next_synth_id() {
+  this->next_synth_id += 2;
+  return this->next_synth_id;
+}
+
+UdpTransmitSocket* Common::get_transmit_socket() {
+  return this->transmit_socket;
 }

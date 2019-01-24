@@ -3,20 +3,21 @@
 #include "./common.h"
 
 Track::Track() {
-  this->bus_id = next_bus_id;
-  next_bus_id += 2;
+  this->bus_id = Common::get().get_next_bus_id();
+  Common::get().increment_next_bus_id();
 
   char buffer[1024];
   osc::OutboundPacketStream p(buffer, 1024);
 
   p << osc::BeginBundleImmediate
       << osc::BeginMessage("/s_new")
-          << "output" << next_synth_id << 0 << 0 << "in" << this->bus_id
+          << "output" << Common::get().get_next_synth_id() << 0 << 0
+          << "in" << this->bus_id
           << osc::EndMessage
       << osc::EndBundle;
-  transmitSocket.Send(p.Data(), p.Size());
+  Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
-  next_synth_id++;
+  Common::get().increment_next_synth_id();
 }
 
 void Track::set_phrase(Phrase* phrase) {
@@ -95,15 +96,16 @@ void Track::send_osc(double beats) {
 
     p << osc::BeginBundleImmediate
         << osc::BeginMessage("/s_new")
-            << "smooth" << next_synth_id << 0 << 0 << "out" << this->bus_id
+            << "smooth" << Common::get().get_next_synth_id() << 0 << 0
+            << "out" << this->bus_id
             << "amp" << note.get_amp()
             << "sustain"
             << this->scheduler->beats_to_seconds(note.get_duration())
-            << "freq" << pitch_to_freq(note.get_pitch())
+            << "freq" << Common::get().pitch_to_freq(note.get_pitch())
             << osc::EndMessage
         << osc::EndBundle;
-    transmitSocket.Send(p.Data(), p.Size());
+    Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
-    next_synth_id++;
+    Common::get().increment_next_synth_id();
   }
 }

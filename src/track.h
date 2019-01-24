@@ -7,6 +7,7 @@
 #include "./note.h"
 #include "./phrase.h"
 #include "./scheduler.h"
+#include "./common.h"
 
 class Track {
  private:
