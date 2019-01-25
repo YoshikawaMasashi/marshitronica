@@ -23,7 +23,7 @@ int Common::increment_next_bus_id() {
 }
 
 int Common::increment_next_synth_id() {
-  this->next_synth_id += 2;
+  this->next_synth_id += 1;
   return this->next_synth_id;
 }
 
