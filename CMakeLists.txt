@@ -3,6 +3,10 @@ project(cpplib)
 
 add_subdirectory(pybind11)
 include_directories(oscpack_1_1_0)
+add_library(oscpack STATIC
+  oscpack_1_1_0/ip/posix/UdpSocket.cpp
+  oscpack_1_1_0/ip/posix/NetworkingUtils.cpp
+  oscpack_1_1_0/ip/IpEndpointName.cpp)
 
 pybind11_add_module(cpplib
   src/main.cpp
@@ -11,3 +15,5 @@ pybind11_add_module(cpplib
   src/phrase.cpp
   src/track.cpp
   src/common.cpp)
+
+target_link_libraries(cpplib PRIVATE oscpack)
