@@ -32,12 +32,12 @@ void Scheduler::schedule() {
       double next_beats = next->first;
       std::vector<std::function<void(void)>> next_tasks = next->second;
       if (next_beats < this->now_beats()) {
+        this->task_queue.erase(next_beats);
+        this->task_queue_mutex.unlock();
         // TODO(marshi): threading
         for (std::function<void(void)> task : next_tasks) {
           task();
         }
-        this->task_queue.erase(next_beats);
-        this->task_queue_mutex.unlock();
         continue;
       }
     }

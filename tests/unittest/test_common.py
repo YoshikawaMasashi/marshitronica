@@ -25,3 +25,6 @@ class TestCommon(unittest.TestCase):
         self.common1.increment_next_synth_id()
         self.assertEqual(self.common1.get_next_synth_id(), next_synth_id1 + 1)
         self.assertEqual(self.common2.get_next_synth_id(), next_synth_id1 + 1)
+
+    def test_pitch_to_freq(self):
+        self.assertEqual(440, mt.cpplib.Common.pitch_to_freq(69))

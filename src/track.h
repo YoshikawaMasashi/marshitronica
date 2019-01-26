@@ -15,10 +15,10 @@ class Track {
   Scheduler* scheduler;
   int bus_id;
  public:
-  double length = 0;
   Track();
   void set_phrase(Phrase*);
   void set_scheduler(Scheduler*);
+  double get_length();
   int now_repeats();
   double now_beats();
   double next_beats();

@@ -9,15 +9,17 @@ Track::Track() {
   char buffer[1024];
   osc::OutboundPacketStream p(buffer, 1024);
 
-  p << osc::BeginBundleImmediate
-      << osc::BeginMessage("/s_new")
-          << "output" << Common::get().get_next_synth_id() << 0 << 0
-          << "in" << this->bus_id
-          << osc::EndMessage
-      << osc::EndBundle;
+  p << osc::BeginMessage("/s_new")
+      << "output" << Common::get().get_next_synth_id() << 0 << 0
+      << "in" << this->bus_id
+    << osc::EndMessage;
   Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
   Common::get().increment_next_synth_id();
+}
+
+double Track::get_length() {
+  return this->phrase->get_length();
 }
 
 void Track::set_phrase(Phrase* phrase) {
@@ -29,11 +31,11 @@ void Track::set_scheduler(Scheduler* scheduler) {
 }
 
 int Track::now_repeats() {
-  return static_cast<int>(this->scheduler->now_beats() / this->length);
+  return static_cast<int>(this->scheduler->now_beats() / this->get_length());
 }
 
 double Track::now_beats() {
-  return fmod(this->scheduler->now_beats(), this->length);
+  return fmod(this->scheduler->now_beats(), this->get_length());
 }
 
 double Track::next_beats() {
@@ -48,9 +50,9 @@ double Track::next_scheduler_beats() {
   auto next_beats = this->phrase->notes.upper_bound(this->now_beats());
   if (next_beats == this->phrase->notes.end()) {
     next_beats = this->phrase->notes.begin();
-    return next_beats->first + this->length * (this->now_repeats() + 1);
+    return next_beats->first + this->get_length() * (this->now_repeats() + 1);
   } else {
-    return next_beats->first + this->length * this->now_repeats();
+    return next_beats->first + this->get_length() * this->now_repeats();
   }
 }
 
@@ -66,9 +68,9 @@ double Track::next_scheduler_beats_of_beats(double beats) {
   auto next_beats = this->phrase->notes.upper_bound(beats);
   if (next_beats == this->phrase->notes.end()) {
     next_beats = this->phrase->notes.begin();
-    return next_beats->first + this->length * (this->now_repeats() + 1);
+    return next_beats->first + this->get_length() * (this->now_repeats() + 1);
   } else {
-    return next_beats->first + this->length * this->now_repeats();
+    return next_beats->first + this->get_length() * this->now_repeats();
   }
 }
 
@@ -77,9 +79,9 @@ void Track::play() {
 }
 
 static void scheduling_callback(Track* track, double scheduler_beats) {
-  double beats = fmod(scheduler_beats, track->length);
-  track->recursive_schedule(track->next_scheduler_beats_of_beats(beats));
+  double beats = fmod(scheduler_beats, track->get_length());
   track->send_osc(beats);
+  track->recursive_schedule(track->next_scheduler_beats_of_beats(beats));
 }
 
 void Track::recursive_schedule(double beats) {
@@ -94,16 +96,14 @@ void Track::send_osc(double beats) {
     char buffer[1024];
     osc::OutboundPacketStream p(buffer, 1024);
 
-    p << osc::BeginBundleImmediate
-        << osc::BeginMessage("/s_new")
-            << "smooth" << Common::get().get_next_synth_id() << 0 << 0
-            << "out" << this->bus_id
-            << "amp" << note.get_amp()
-            << "sustain"
-            << this->scheduler->beats_to_seconds(note.get_duration())
-            << "freq" << Common::get().pitch_to_freq(note.get_pitch())
-            << osc::EndMessage
-        << osc::EndBundle;
+    p << osc::BeginMessage("/s_new")
+        << "smooth" << Common::get().get_next_synth_id() << 0 << 0
+        << "out" << this->bus_id
+        << "amp" << note.get_amp()
+        << "sustain"
+        << this->scheduler->beats_to_seconds(note.get_duration())
+        << "freq" << Common::get().pitch_to_freq(note.get_pitch())
+      << osc::EndMessage;
     Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
     Common::get().increment_next_synth_id();

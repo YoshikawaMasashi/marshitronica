@@ -20,7 +20,7 @@ class Common{
   }
 
   static double pitch_to_freq(double pitch) {
-    return pow(440 * 2, ((pitch - 69) / 12));
+    return 440 * pow(2, ((pitch - 69) / 12));
   }
 
   int get_next_bus_id();
