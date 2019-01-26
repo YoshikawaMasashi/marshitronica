@@ -9,10 +9,12 @@ Track::Track() {
   char buffer[1024];
   osc::OutboundPacketStream p(buffer, 1024);
 
-  p << osc::BeginMessage("/s_new")
-      << "output" << Common::get().get_next_synth_id() << 0 << 0
-      << "in" << this->bus_id
-    << osc::EndMessage;
+  p << osc::BeginBundleImmediate
+      << osc::BeginMessage("/s_new")
+        << "output" << Common::get().get_next_synth_id() << 0 << 0
+        << "in" << this->bus_id
+      << osc::EndMessage
+    << osc::EndBundle;
   Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
   Common::get().increment_next_synth_id();
@@ -96,16 +98,18 @@ void Track::send_osc(double beats) {
     char buffer[1024];
     osc::OutboundPacketStream p(buffer, 1024);
 
-    p << osc::BeginMessage("/s_new")
-        << "smooth" << Common::get().get_next_synth_id() << 0 << 0
-        << "out" << this->bus_id
-        << "amp" << static_cast<float>(note.get_amp())
-        << "sustain"
-        << static_cast<float>(
-            this->scheduler->beats_to_seconds(note.get_duration()))
-        << "freq" << static_cast<float>(
-            Common::get().pitch_to_freq(note.get_pitch()))
-      << osc::EndMessage;
+    p << osc::BeginBundleImmediate
+        << osc::BeginMessage("/s_new")
+          << "smooth" << Common::get().get_next_synth_id() << 0 << 0
+          << "out" << this->bus_id
+          << "amp" << static_cast<float>(note.get_amp())
+          << "sustain"
+          << static_cast<float>(
+              this->scheduler->beats_to_seconds(note.get_duration()))
+          << "freq" << static_cast<float>(
+              Common::get().pitch_to_freq(note.get_pitch()))
+        << osc::EndMessage
+      << osc::EndBundle;
     Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
     Common::get().increment_next_synth_id();
