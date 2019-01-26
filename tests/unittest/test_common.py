@@ -7,8 +7,8 @@ class TestCommon(unittest.TestCase):
 
     def setUp(self):
         super(TestCommon, self).setUp()
-        self.common1 = mt.cpplib.Common.get()
-        self.common2 = mt.cpplib.Common.get()
+        self.common1 = mt.Common.get()
+        self.common2 = mt.Common.get()
 
     def test_next_bus_id(self):
         next_bus_id1 = self.common1.get_next_bus_id()
@@ -27,4 +27,4 @@ class TestCommon(unittest.TestCase):
         self.assertEqual(self.common2.get_next_synth_id(), next_synth_id1 + 1)
 
     def test_pitch_to_freq(self):
-        self.assertEqual(440, mt.cpplib.Common.pitch_to_freq(69))
+        self.assertEqual(440, mt.Common.pitch_to_freq(69))

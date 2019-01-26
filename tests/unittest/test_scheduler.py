@@ -7,7 +7,7 @@ class TestScheduler(unittest.TestCase):
 
     def setUp(self):
         super(TestScheduler, self).setUp()
-        self.scheduler = mt.cpplib.Scheduler()
+        self.scheduler = mt.Scheduler()
 
     def test_seconds_to_beats(self):
         self.assertEqual(2, self.scheduler.seconds_to_beats(1))

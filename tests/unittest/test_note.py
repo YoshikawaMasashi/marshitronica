@@ -7,7 +7,7 @@ class TestNote(unittest.TestCase):
 
     def setUp(self):
         super(TestNote, self).setUp()
-        self.note = mt.cpplib.Note(60, 1, 0.5)
+        self.note = mt.Note(60, 1, 0.5)
 
     def test_get_pitch(self):
         self.assertEqual(60, self.note.get_pitch())

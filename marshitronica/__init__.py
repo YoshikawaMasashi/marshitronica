@@ -5,12 +5,11 @@ import pathlib
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
-from marshitronica.scheduler import Scheduler  # NOQA
-from marshitronica.phrase import Phrase  # NOQA
-from marshitronica.track import Track  # NOQA
-from marshitronica.phrase import Note  # NOQA
-
-from marshitronica import cpplib  # NOQA
+from marshitronica.cpplib import Scheduler  # NOQA
+from marshitronica.cpplib import Phrase  # NOQA
+from marshitronica.cpplib import Track  # NOQA
+from marshitronica.cpplib import Note  # NOQA
+from marshitronica.cpplib import Common  # NOQA
 
 # load synthdef
 module_path = pathlib.Path(os.path.dirname(__file__))
@@ -22,6 +21,3 @@ for path in glob.glob(str(module_path / 'scsyndef/*.scsyndef')):
     msg.add_arg(path, arg_type='s')
     msg = msg.build()
     client.send(msg)
-
-NEXT_BUS_ID = 4
-NEXT_SYNTH_ID = 10000
