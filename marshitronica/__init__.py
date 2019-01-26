@@ -10,6 +10,7 @@ from marshitronica.phrase import Phrase  # NOQA
 from marshitronica.track import Track  # NOQA
 from marshitronica.phrase import Note  # NOQA
 
+from marshitronica import cpplib  # NOQA
 
 # load synthdef
 module_path = pathlib.Path(os.path.dirname(__file__))

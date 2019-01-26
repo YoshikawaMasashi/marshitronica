@@ -1,7 +1,17 @@
 // Copyright[2019] <marshi(masashi yoshikawa)>
 #include "scheduler.h"
+#include "unistd.h"
+
 
 Scheduler::Scheduler() {
+  return;
+}
+
+Scheduler::~Scheduler() {
+  this->set_is_running(false);
+  if (this->scheduling_thread.joinable()) {
+    this->scheduling_thread.join();
+  }
   return;
 }
 
@@ -9,9 +19,11 @@ void Scheduler::schedule() {
   while (true) {
     this->is_running_mutex.lock();
     if (!this->is_running) {
+      this->is_running_mutex.unlock();
       break;
+    } else {
+      this->is_running_mutex.unlock();
     }
-    this->is_running_mutex.unlock();
 
     this->task_queue_mutex.lock();
     if (this->task_queue.size() > 0) {
@@ -25,12 +37,13 @@ void Scheduler::schedule() {
           task();
         }
         this->task_queue.erase(next_beats);
+        this->task_queue_mutex.unlock();
         continue;
       }
     }
     this->task_queue_mutex.unlock();
+    usleep(this->step_second * 1000000);
   }
-  this->is_running_mutex.unlock();
 }
 
 void Scheduler::set_is_running(bool is_running) {
@@ -47,6 +60,7 @@ void Scheduler::start() {
 
 void Scheduler::stop() {
   this->set_is_running(false);
+  this->scheduling_thread.join();
 }
 
 double Scheduler::seconds_to_beats(double seconds) {
@@ -76,7 +90,8 @@ void Scheduler::add_task(double beats, std::function<void(void)> task) {
   if (this->task_queue.find(beats) != this->task_queue.end()) {
     this->task_queue.at(beats).push_back(task);
   } else {
-    this->task_queue.insert(std::make_pair(beats, std::vector<std::function<void(void)>>({task})));
+    this->task_queue.insert(
+        std::make_pair(beats, std::vector<std::function<void(void)>>({task})));
   }
   this->task_queue_mutex.unlock();
 }

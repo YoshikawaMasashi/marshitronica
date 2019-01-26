@@ -1,5 +1,6 @@
 // Copyright[2019] <marshi(masashi yoshikawa)>
 #include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 
 #include "./scheduler.h"
 #include "./note.h"

@@ -22,6 +22,7 @@ class Scheduler {
     void set_is_running(bool);
  public:
     Scheduler();
+    ~Scheduler();
     void schedule();
     void start();
     void stop();
