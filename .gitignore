@@ -1,3 +1,4 @@
 *.so
 build/*
 marshitronica.egg-info/*
+.pytest_cache/*
