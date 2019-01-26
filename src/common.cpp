@@ -6,7 +6,7 @@ Common::Common() {
   this->next_bus_id = 4;
   this->next_synth_id = 10000;
   this->transmit_socket = new UdpTransmitSocket(
-    IpEndpointName("127.0.0.1", 57110));
+    IpEndpointName("localhost", 57110));
 }
 
 int Common::get_next_bus_id() {

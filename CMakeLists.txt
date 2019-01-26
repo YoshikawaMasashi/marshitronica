@@ -3,7 +3,7 @@ project(cpplib)
 
 add_subdirectory(pybind11)
 include_directories(oscpack_1_1_0)
-add_library(oscpack STATIC
+add_library(oscpack
   oscpack_1_1_0/ip/posix/UdpSocket.cpp
   oscpack_1_1_0/ip/posix/NetworkingUtils.cpp
   oscpack_1_1_0/ip/IpEndpointName.cpp
