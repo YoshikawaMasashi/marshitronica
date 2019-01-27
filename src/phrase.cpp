@@ -20,3 +20,18 @@ void Phrase::add_event(double beats, std::shared_ptr<Event> event) {
 double Phrase::get_length() {
   return this->length;
 }
+
+std::vector<std::pair<double, std::shared_ptr<Event>>>
+  Phrase::get_events_in_range(
+  double start, double end) {
+  std::vector<std::pair<double, std::shared_ptr<Event>>> result = {};
+
+  auto start_iter = this->events.lower_bound(start);
+  auto end_iter = this->events.lower_bound(end);
+  for (auto events_iter = start_iter; events_iter != end_iter ; events_iter++) {
+    for (std::shared_ptr<Event> event : events_iter->second) {
+      result.push_back(std::make_pair(events_iter->first, event));
+    }
+  }
+  return result;
+}

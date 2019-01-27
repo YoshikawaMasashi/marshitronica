@@ -1,6 +1,7 @@
 // Copyright[2019] <marshi(masashi yoshikawa)>
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#include <pybind11/stl.h>
 
 #include "./scheduler.h"
 #include "./note.h"
@@ -47,7 +48,8 @@ PYBIND11_MODULE(cpplib, m) {
   py::class_<Phrase>(m, "Phrase")
     .def(py::init<>())
     .def("add_event", &Phrase::add_event)
-    .def("get_length", &Phrase::get_length);
+    .def("get_length", &Phrase::get_length)
+    .def("get_events_in_range", &Phrase::get_events_in_range);
 
   py::class_<Track>(m, "Track")
     .def(py::init<>())
