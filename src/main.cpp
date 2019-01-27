@@ -58,6 +58,5 @@ PYBIND11_MODULE(cpplib, m) {
     .def("next_scheduler_beats", &Track::next_scheduler_beats)
     .def("next_scheduler_beats_of_beats", &Track::next_scheduler_beats_of_beats)
     .def("play", &Track::play)
-    .def("recursive_schedule", &Track::recursive_schedule)
     .def("send_osc", &Track::send_osc);
 }

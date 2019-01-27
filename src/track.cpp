@@ -33,6 +33,10 @@ void Track::set_scheduler(Scheduler* scheduler) {
   this->scheduler = scheduler;
 }
 
+Scheduler* Track::get_scheduler() {
+  return this->scheduler;
+}
+
 int Track::now_repeats() {
   return static_cast<int>(this->scheduler->now_beats() / this->get_length());
 }
@@ -61,19 +65,20 @@ double Track::next_scheduler_beats_of_beats(double beats) {
   }
 }
 
-void Track::play() {
-  this->recursive_schedule(this->next_scheduler_beats());
-}
-
 static void scheduling_callback(Track* track, double scheduler_beats) {
   double beats = fmod(scheduler_beats, track->get_length());
   track->send_osc(beats);
-  track->recursive_schedule(track->next_scheduler_beats_of_beats(beats));
+  double next_scheduler_beats = track->next_scheduler_beats_of_beats(beats);
+  std::function<void(void)> f =
+    std::bind(scheduling_callback, track, next_scheduler_beats);
+  track->get_scheduler()->add_task(next_scheduler_beats, f);
 }
 
-void Track::recursive_schedule(double beats) {
-  std::function<void(void)> f = std::bind(scheduling_callback, this, beats);
-  this->scheduler->add_task(beats, f);
+void Track::play() {
+  double next_scheduler_beats = this->next_scheduler_beats();
+  std::function<void(void)> f =
+    std::bind(scheduling_callback, this, next_scheduler_beats);
+  this->scheduler->add_task(next_scheduler_beats, f);
 }
 
 void Track::send_osc(double beats) {
