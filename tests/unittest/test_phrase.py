@@ -11,5 +11,5 @@ class TestPhrase(unittest.TestCase):
     def test_get_length(self):
         phrase = mt.Phrase()
         self.assertEqual(0, phrase.get_length())
-        phrase.add_note(0, mt.Note(60, 1, 0.5))
+        phrase.add_event(0, mt.Note(60, 1, 0.5))
         self.assertEqual(1, phrase.get_length())
