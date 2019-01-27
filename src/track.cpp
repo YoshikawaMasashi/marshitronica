@@ -55,6 +55,22 @@ double Track::next_scheduler_beats() {
   }
 }
 
+double Track::next_beats() {
+  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
+  }
+  return next_beats->first;
+}
+
+double Track::next_beats_of_beats(double beats) {
+  auto next_beats = this->phrase->events.upper_bound(beats);
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
+  }
+  return next_beats->first;
+}
+
 double Track::next_scheduler_beats_of_beats(double beats) {
   auto next_beats = this->phrase->events.upper_bound(beats);
   if (next_beats == this->phrase->events.end()) {
@@ -65,20 +81,21 @@ double Track::next_scheduler_beats_of_beats(double beats) {
   }
 }
 
-static void scheduling_callback(Track* track, double scheduler_beats) {
-  double beats = fmod(scheduler_beats, track->get_length());
+static void scheduling_callback(Track* track, double beats) {
   track->send_osc(beats);
+  double next_beats = track->next_beats_of_beats(beats);
   double next_scheduler_beats = track->next_scheduler_beats_of_beats(beats);
   std::function<void(void)> f =
-    std::bind(scheduling_callback, track, next_scheduler_beats);
+    std::bind(scheduling_callback, track, next_beats);
   track->get_scheduler()->add_task(next_scheduler_beats, f);
 }
 
 void Track::play() {
-  double next_scheduler_beats = this->next_scheduler_beats();
+  double next_beats = fmod(this->next_beats(), this->get_length());
   std::function<void(void)> f =
-    std::bind(scheduling_callback, this, next_scheduler_beats);
-  this->scheduler->add_task(next_scheduler_beats, f);
+    std::bind(scheduling_callback, this, next_beats);
+  this->scheduler->add_task(
+    next_beats + this->get_length() * this->now_repeats(), f);
 }
 
 void Track::send_osc(double beats) {
