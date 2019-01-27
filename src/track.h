@@ -12,11 +12,12 @@
 class Track {
  private:
   Phrase* phrase;
-  int bus_id;
   Scheduler* scheduler;
  public:
   Track();
+  int bus_id;
   void set_phrase(Phrase*);
+  Phrase* get_phrase();
   void set_scheduler(Scheduler*);
   Scheduler* get_scheduler();
   double get_length();
@@ -27,5 +28,4 @@ class Track {
   double next_beats_of_beats(double);
   double next_scheduler_beats_of_beats(double);
   void play();
-  void send_osc(double);
 };

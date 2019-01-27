@@ -59,6 +59,5 @@ PYBIND11_MODULE(cpplib, m) {
     .def("now_beats", &Track::now_beats)
     .def("next_scheduler_beats", &Track::next_scheduler_beats)
     .def("next_scheduler_beats_of_beats", &Track::next_scheduler_beats_of_beats)
-    .def("play", &Track::play)
-    .def("send_osc", &Track::send_osc);
+    .def("play", &Track::play);
 }

@@ -29,6 +29,10 @@ void Track::set_phrase(Phrase* phrase) {
   this->phrase = phrase;
 }
 
+Phrase* Track::get_phrase() {
+  return this->phrase;
+}
+
 void Track::set_scheduler(Scheduler* scheduler) {
   this->scheduler = scheduler;
 }
@@ -81,38 +85,53 @@ double Track::next_scheduler_beats_of_beats(double beats) {
   }
 }
 
-static void scheduling_callback(Track* track, double beats) {
-  track->send_osc(beats);
-  double next_beats = track->next_beats_of_beats(beats);
-  double next_scheduler_beats = track->next_scheduler_beats_of_beats(beats);
-  std::function<void(void)> f =
-    std::bind(scheduling_callback, track, next_beats);
-  track->get_scheduler()->add_task(next_scheduler_beats, f);
+static void send_osc(Track* track, std::shared_ptr<Event> event) {
+  char buffer[1024];
+  osc::OutboundPacketStream p(buffer, 1024);
+
+  p << osc::BeginBundleImmediate;
+  p = event->add_osc_message(
+    p, Common::get().get_next_synth_id(),
+    track->bus_id, track->get_scheduler()->get_bpm());
+  p << osc::EndBundle;
+  Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
+
+  Common::get().increment_next_synth_id();
+}
+
+static void new_scheduling_callback(Track* track, double scheduler_beats) {
+  double next_scheduler_beats = scheduler_beats + 1;
+  double beats = fmod(scheduler_beats, track->get_phrase()->get_length());
+  double next_beats =
+    fmod(next_scheduler_beats, track->get_phrase()->get_length());
+
+  std::vector<std::pair<double, std::shared_ptr<Event>>> events_list
+    = track->get_phrase()->get_events_in_range(beats, next_beats);
+
+  std::function<void(void)> f;
+  for ( auto event_pair : events_list ) {
+    f = std::bind(send_osc, track, event_pair.second);
+    track->get_scheduler()->add_task(
+      event_pair.first + (scheduler_beats - beats), f);
+  }
+  f = std::bind(new_scheduling_callback, track, next_scheduler_beats);
+  track->get_scheduler()->add_task(scheduler_beats, f);
 }
 
 void Track::play() {
-  double next_beats = fmod(this->next_beats(), this->get_length());
-  std::function<void(void)> f =
-    std::bind(scheduling_callback, this, next_beats);
-  this->scheduler->add_task(
-    next_beats + this->get_length() * this->now_repeats(), f);
-}
+  double now_scheduler_beats = this->scheduler->now_beats();
+  double next_scheduler_beats = ceil(now_scheduler_beats);
+  double now_beats = fmod(now_scheduler_beats, this->phrase->get_length());
+  double next_beats = fmod(next_scheduler_beats, this->phrase->get_length());
 
-void Track::send_osc(double beats) {
-  std::vector<std::shared_ptr<Event>> events_in_beats
-    = this->phrase->events[beats];
+  std::vector<std::pair<double, std::shared_ptr<Event>>> events_list
+    = this->phrase->get_events_in_range(now_beats, next_beats);
 
-  for ( std::shared_ptr<Event> event : events_in_beats ) {
-    char buffer[1024];
-    osc::OutboundPacketStream p(buffer, 1024);
-
-    p << osc::BeginBundleImmediate;
-    p = event->add_osc_message(
-      p, Common::get().get_next_synth_id(),
-      this->bus_id, this->scheduler->get_bpm());
-    p << osc::EndBundle;
-    Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
-
-    Common::get().increment_next_synth_id();
+  std::function<void(void)> f;
+  for ( auto event_pair : events_list ) {
+    f = std::bind(send_osc, this, event_pair.second);
+    this->scheduler->add_task(
+      event_pair.first + (now_scheduler_beats - now_beats), f);
   }
+  new_scheduling_callback(this, next_scheduler_beats);
 }

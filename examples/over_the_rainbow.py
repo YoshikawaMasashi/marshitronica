@@ -21,4 +21,4 @@ track.set_phrase(phrase)
 
 track.play()
 
-time.sleep(15)
+time.sleep(20)
