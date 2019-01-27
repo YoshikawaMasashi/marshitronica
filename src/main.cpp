@@ -15,7 +15,6 @@ namespace py = pybind11;
 PYBIND11_MODULE(cpplib, m) {
   py::class_<Common>(m, "Common")
     .def_static("get", &Common::get, py::return_value_policy::reference)
-    .def_static("pitch_to_freq", &Common::pitch_to_freq)
     .def("get_next_bus_id", &Common::get_next_bus_id)
     .def("get_next_synth_id", &Common::get_next_synth_id)
     .def("increment_next_bus_id", &Common::increment_next_bus_id)

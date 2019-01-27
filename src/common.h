@@ -22,10 +22,6 @@ class Common{
     return instance;
   }
 
-  static double pitch_to_freq(double pitch) {
-    return 440 * pow(2, ((pitch - 69) / 12));
-  }
-
   int get_next_bus_id();
   int get_next_synth_id();
   int increment_next_bus_id();
