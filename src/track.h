@@ -21,9 +21,7 @@ class Track {
   double get_length();
   int now_repeats();
   double now_beats();
-  double next_beats();
   double next_scheduler_beats();
-  double next_beats_of_beats(double);
   double next_scheduler_beats_of_beats(double);
   void play();
   void recursive_schedule(double);

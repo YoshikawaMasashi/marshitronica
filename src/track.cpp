@@ -41,14 +41,6 @@ double Track::now_beats() {
   return fmod(this->scheduler->now_beats(), this->get_length());
 }
 
-double Track::next_beats() {
-  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-  }
-  return next_beats->first;
-}
-
 double Track::next_scheduler_beats() {
   auto next_beats = this->phrase->events.upper_bound(this->now_beats());
   if (next_beats == this->phrase->events.end()) {
@@ -57,14 +49,6 @@ double Track::next_scheduler_beats() {
   } else {
     return next_beats->first + this->get_length() * this->now_repeats();
   }
-}
-
-double Track::next_beats_of_beats(double beats) {
-  auto next_beats = this->phrase->events.upper_bound(beats);
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-  }
-  return next_beats->first;
 }
 
 double Track::next_scheduler_beats_of_beats(double beats) {
