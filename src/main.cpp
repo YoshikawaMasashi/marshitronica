@@ -54,9 +54,5 @@ PYBIND11_MODULE(cpplib, m) {
     .def(py::init<>())
     .def("set_phrase", &Track::set_phrase)
     .def("set_scheduler", &Track::set_scheduler)
-    .def("now_repeats", &Track::now_repeats)
-    .def("now_beats", &Track::now_beats)
-    .def("next_scheduler_beats", &Track::next_scheduler_beats)
-    .def("next_scheduler_beats_of_beats", &Track::next_scheduler_beats_of_beats)
     .def("play", &Track::play);
 }

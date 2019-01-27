@@ -41,50 +41,6 @@ Scheduler* Track::get_scheduler() {
   return this->scheduler;
 }
 
-int Track::now_repeats() {
-  return static_cast<int>(this->scheduler->now_beats() / this->get_length());
-}
-
-double Track::now_beats() {
-  return fmod(this->scheduler->now_beats(), this->get_length());
-}
-
-double Track::next_scheduler_beats() {
-  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-    return next_beats->first + this->get_length() * (this->now_repeats() + 1);
-  } else {
-    return next_beats->first + this->get_length() * this->now_repeats();
-  }
-}
-
-double Track::next_beats() {
-  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-  }
-  return next_beats->first;
-}
-
-double Track::next_beats_of_beats(double beats) {
-  auto next_beats = this->phrase->events.upper_bound(beats);
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-  }
-  return next_beats->first;
-}
-
-double Track::next_scheduler_beats_of_beats(double beats) {
-  auto next_beats = this->phrase->events.upper_bound(beats);
-  if (next_beats == this->phrase->events.end()) {
-    next_beats = this->phrase->events.begin();
-    return next_beats->first + this->get_length() * (this->now_repeats() + 1);
-  } else {
-    return next_beats->first + this->get_length() * this->now_repeats();
-  }
-}
-
 static void send_osc(Track* track, std::shared_ptr<Event> event) {
   char buffer[1024];
   osc::OutboundPacketStream p(buffer, 1024);
