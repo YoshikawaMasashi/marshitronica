@@ -71,6 +71,10 @@ double Scheduler::beats_to_seconds(double beats) {
   return beats * 60 / this->bpm;
 }
 
+double Scheduler::get_bpm() {
+  return this->bpm;
+}
+
 double Scheduler::now_seconds() {
   std::chrono::duration<double> now_seconds_duration =
     std::chrono::system_clock::now() - this->start_time;

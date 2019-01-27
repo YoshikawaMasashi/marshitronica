@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 #include <math.h>
-#include "./note.h"
+#include "./event.h"
 #include "./phrase.h"
 #include "./scheduler.h"
 #include "./common.h"

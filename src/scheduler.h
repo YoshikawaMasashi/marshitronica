@@ -27,6 +27,7 @@ class Scheduler {
     void start();
     void stop();
     void add_task(double, std::function<void(void)>);
+    double get_bpm();
     double now_seconds();
     double now_beats();
     double seconds_to_beats(double);

@@ -9,7 +9,8 @@ pybind11_add_module(cpplib
   src/note.cpp
   src/phrase.cpp
   src/track.cpp
-  src/common.cpp)
+  src/common.cpp
+  src/event.cpp)
 
 include_directories(oscpack_1_1_0)
 add_subdirectory(oscpack_1_1_0)

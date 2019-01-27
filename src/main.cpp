@@ -4,6 +4,7 @@
 
 #include "./scheduler.h"
 #include "./note.h"
+#include "./event.h"
 #include "./phrase.h"
 #include "./track.h"
 #include "./common.h"
@@ -31,15 +32,21 @@ PYBIND11_MODULE(cpplib, m) {
     .def("seconds_to_beats", &Scheduler::seconds_to_beats)
     .def("beats_to_seconds", &Scheduler::beats_to_seconds);
 
-  py::class_<Note>(m, "Note")
+  py::class_<Event>(m, "Event")
+    .def("add_osc_message", &Event::add_osc_message)
+    .def("get_length", &Event::get_length);
+
+  py::class_<Note, Event>(m, "Note")
     .def(py::init<double, double, double>())
+    .def("add_osc_message", &Note::add_osc_message)
+    .def("get_length", &Note::get_length)
     .def("get_pitch", &Note::get_pitch)
     .def("get_duration", &Note::get_duration)
     .def("get_amp", &Note::get_amp);
 
   py::class_<Phrase>(m, "Phrase")
     .def(py::init<>())
-    .def("add_note", &Phrase::add_note)
+    .def("add_event", &Phrase::add_event)
     .def("get_length", &Phrase::get_length);
 
   py::class_<Track>(m, "Track")

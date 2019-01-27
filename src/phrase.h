@@ -5,14 +5,14 @@
 
 #include <map>
 #include <vector>
-#include "./note.h"
+#include "./event.h"
 
 class Phrase {
  private:
   double length;
  public:
   Phrase();
-  void add_note(double, Note);
+  void add_event(double, Event*);
   double get_length();
-  std::map<double, std::vector<Note>> notes;
+  std::map<double, std::vector<Event*>> events;
 };

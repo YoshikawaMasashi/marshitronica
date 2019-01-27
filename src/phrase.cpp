@@ -7,13 +7,13 @@ Phrase::Phrase() {
   return;
 }
 
-void Phrase::add_note(double beats, Note note) {
-  if (this->notes.find(beats) != this->notes.end()) {
-    this->notes.at(beats).push_back(note);
+void Phrase::add_event(double beats, Event* event) {
+  if (this->events.find(beats) != this->events.end()) {
+    this->events.at(beats).push_back(event);
   } else {
-    this->notes.insert(std::make_pair(beats, std::vector<Note>({note})));
+    this->events.insert(std::make_pair(beats, std::vector<Event*>({event})));
   }
-  this->length = std::max(this->length, beats + note.get_duration());
+  this->length = std::max(this->length, beats + event->get_length());
 }
 
 double Phrase::get_length() {

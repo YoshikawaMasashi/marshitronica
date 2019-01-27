@@ -1,6 +1,5 @@
 // Copyright[2019] <marshi(masashi yoshikawa)>
 #include "./track.h"
-#include "./common.h"
 
 Track::Track() {
   this->bus_id = Common::get().get_next_bus_id();
@@ -41,17 +40,17 @@ double Track::now_beats() {
 }
 
 double Track::next_beats() {
-  auto next_beats = this->phrase->notes.upper_bound(this->now_beats());
-  if (next_beats == this->phrase->notes.end()) {
-    next_beats = this->phrase->notes.begin();
+  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
   }
   return next_beats->first;
 }
 
 double Track::next_scheduler_beats() {
-  auto next_beats = this->phrase->notes.upper_bound(this->now_beats());
-  if (next_beats == this->phrase->notes.end()) {
-    next_beats = this->phrase->notes.begin();
+  auto next_beats = this->phrase->events.upper_bound(this->now_beats());
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
     return next_beats->first + this->get_length() * (this->now_repeats() + 1);
   } else {
     return next_beats->first + this->get_length() * this->now_repeats();
@@ -59,17 +58,17 @@ double Track::next_scheduler_beats() {
 }
 
 double Track::next_beats_of_beats(double beats) {
-  auto next_beats = this->phrase->notes.upper_bound(beats);
-  if (next_beats == this->phrase->notes.end()) {
-    next_beats = this->phrase->notes.begin();
+  auto next_beats = this->phrase->events.upper_bound(beats);
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
   }
   return next_beats->first;
 }
 
 double Track::next_scheduler_beats_of_beats(double beats) {
-  auto next_beats = this->phrase->notes.upper_bound(beats);
-  if (next_beats == this->phrase->notes.end()) {
-    next_beats = this->phrase->notes.begin();
+  auto next_beats = this->phrase->events.upper_bound(beats);
+  if (next_beats == this->phrase->events.end()) {
+    next_beats = this->phrase->events.begin();
     return next_beats->first + this->get_length() * (this->now_repeats() + 1);
   } else {
     return next_beats->first + this->get_length() * this->now_repeats();
@@ -92,24 +91,17 @@ void Track::recursive_schedule(double beats) {
 }
 
 void Track::send_osc(double beats) {
-  std::vector<Note> notes_in_beats = this->phrase->notes[beats];
+  std::vector<Event*> events_in_beats = this->phrase->events[beats];
 
-  for ( Note note : notes_in_beats ) {
+  for ( Event* event : events_in_beats ) {
     char buffer[1024];
     osc::OutboundPacketStream p(buffer, 1024);
 
-    p << osc::BeginBundleImmediate
-        << osc::BeginMessage("/s_new")
-          << "smooth" << Common::get().get_next_synth_id() << 0 << 0
-          << "out" << this->bus_id
-          << "amp" << static_cast<float>(note.get_amp())
-          << "sustain"
-          << static_cast<float>(
-              this->scheduler->beats_to_seconds(note.get_duration()))
-          << "freq" << static_cast<float>(
-              Common::get().pitch_to_freq(note.get_pitch()))
-        << osc::EndMessage
-      << osc::EndBundle;
+    p << osc::BeginBundleImmediate;
+    p = event->add_osc_message(
+      p, Common::get().get_next_synth_id(),
+      this->bus_id, this->scheduler->get_bpm());
+    p << osc::EndBundle;
     Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
     Common::get().increment_next_synth_id();
