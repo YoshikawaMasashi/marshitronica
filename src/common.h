@@ -4,6 +4,7 @@
 
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
+#include "scheduler.h"
 
 
 class Common{
@@ -14,6 +15,8 @@ class Common{
   UdpTransmitSocket* transmit_socket;
 
  public:
+  Scheduler *main_scheduler;
+
   static Common& get() {
     static Common instance;
     return instance;

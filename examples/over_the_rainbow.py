@@ -5,8 +5,6 @@ import marshitronica as mt
 
 phrase = mt.Phrase()
 track = mt.Track()
-scheduler = mt.Scheduler()
-scheduler.start()
 
 pitch = [60, 72, 71, 67, 69, 71, 72, 60, 69, 67,
          60, 65, 64, 60, 62, 64, 65, 62, 59, 60, 62, 64, 60]
@@ -20,9 +18,7 @@ for p, d, b in zip(pitch, dur, beats):
     phrase.add_event(b, note)
 
 track.set_phrase(phrase)
-track.set_scheduler(scheduler)
 
 track.play()
 
-time.sleep(30)
-scheduler.stop()
+time.sleep(15)

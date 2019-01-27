@@ -7,6 +7,8 @@ Common::Common() {
   this->next_synth_id = 10000;
   this->transmit_socket = new UdpTransmitSocket(
     IpEndpointName("localhost", 57110));
+  this->main_scheduler = new Scheduler();
+  this->main_scheduler->start();
 }
 
 int Common::get_next_bus_id() {

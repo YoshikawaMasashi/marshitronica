@@ -17,6 +17,8 @@ Track::Track() {
   Common::get().get_transmit_socket()->Send(p.Data(), p.Size());
 
   Common::get().increment_next_synth_id();
+
+  this->scheduler = Common::get().main_scheduler;
 }
 
 double Track::get_length() {
