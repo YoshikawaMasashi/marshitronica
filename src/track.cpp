@@ -61,6 +61,7 @@ static void new_scheduling_callback(Track* track, double scheduler_beats) {
   double next_beats =
     fmod(next_scheduler_beats, track->get_phrase()->get_length());
 
+  // TODO(marshi): beats > next_beats
   std::vector<std::pair<double, std::shared_ptr<Event>>> events_list
     = track->get_phrase()->get_events_in_range(beats, next_beats);
 

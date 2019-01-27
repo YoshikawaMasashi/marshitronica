@@ -26,6 +26,8 @@ std::vector<std::pair<double, std::shared_ptr<Event>>>
   double start, double end) {
   std::vector<std::pair<double, std::shared_ptr<Event>>> result = {};
 
+  if (start > end) return result;
+
   auto start_iter = this->events.lower_bound(start);
   auto end_iter = this->events.lower_bound(end);
   for (auto events_iter = start_iter; events_iter != end_iter ; events_iter++) {
