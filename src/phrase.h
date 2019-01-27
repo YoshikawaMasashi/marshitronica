@@ -12,7 +12,7 @@ class Phrase {
   double length;
  public:
   Phrase();
-  void add_event(double, Event*);
+  void add_event(double, std::shared_ptr<Event>);
   double get_length();
-  std::map<double, std::vector<Event*>> events;
+  std::map<double, std::vector<std::shared_ptr<Event>>> events;
 };

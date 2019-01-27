@@ -91,9 +91,10 @@ void Track::recursive_schedule(double beats) {
 }
 
 void Track::send_osc(double beats) {
-  std::vector<Event*> events_in_beats = this->phrase->events[beats];
+  std::vector<std::shared_ptr<Event>> events_in_beats
+    = this->phrase->events[beats];
 
-  for ( Event* event : events_in_beats ) {
+  for ( std::shared_ptr<Event> event : events_in_beats ) {
     char buffer[1024];
     osc::OutboundPacketStream p(buffer, 1024);
 

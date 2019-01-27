@@ -11,7 +11,8 @@ class Note : public Event{
   double duration;
   double amp;
  public:
-  osc::OutboundPacketStream& add_osc_message(osc::OutboundPacketStream& p, int, int, int);
+  osc::OutboundPacketStream& add_osc_message(
+    osc::OutboundPacketStream& p, int, int, int);
   Note(double, double, double);
   double get_pitch();
   double get_duration();

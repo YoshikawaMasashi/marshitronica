@@ -32,11 +32,11 @@ PYBIND11_MODULE(cpplib, m) {
     .def("seconds_to_beats", &Scheduler::seconds_to_beats)
     .def("beats_to_seconds", &Scheduler::beats_to_seconds);
 
-  py::class_<Event>(m, "Event")
+  py::class_<Event, std::shared_ptr<Event>>(m, "Event")
     .def("add_osc_message", &Event::add_osc_message)
     .def("get_length", &Event::get_length);
 
-  py::class_<Note, Event>(m, "Note")
+  py::class_<Note, Event, std::shared_ptr<Note>>(m, "Note")
     .def(py::init<double, double, double>())
     .def("add_osc_message", &Note::add_osc_message)
     .def("get_length", &Note::get_length)

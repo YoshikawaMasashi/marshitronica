@@ -7,11 +7,12 @@ Phrase::Phrase() {
   return;
 }
 
-void Phrase::add_event(double beats, Event* event) {
+void Phrase::add_event(double beats, std::shared_ptr<Event> event) {
   if (this->events.find(beats) != this->events.end()) {
     this->events.at(beats).push_back(event);
   } else {
-    this->events.insert(std::make_pair(beats, std::vector<Event*>({event})));
+    this->events.insert(
+      std::make_pair(beats, std::vector<std::shared_ptr<Event>>({event})));
   }
   this->length = std::max(this->length, beats + event->get_length());
 }
