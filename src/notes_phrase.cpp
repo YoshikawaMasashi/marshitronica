@@ -17,10 +17,6 @@ void NotesPhrase::add_note(double beats, std::shared_ptr<Note> note) {
   this->length = std::max(this->length, beats + note->get_duration());
 }
 
-double NotesPhrase::get_length() {
-  return this->length;
-}
-
 static double beats_to_seconds(double beats, double bpm) {
   return beats * 60 / bpm;
 }

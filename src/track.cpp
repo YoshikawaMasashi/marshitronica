@@ -25,11 +25,11 @@ double Track::get_length() {
   return this->phrase->get_length();
 }
 
-void Track::set_phrase(NotesPhrase* phrase) {
+void Track::set_phrase(Phrase* phrase) {
   this->phrase = phrase;
 }
 
-NotesPhrase* Track::get_phrase() {
+Phrase* Track::get_phrase() {
   return this->phrase;
 }
 

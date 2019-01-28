@@ -4,19 +4,19 @@
 #include <map>
 #include <vector>
 #include <math.h>
-#include "./notes_phrase.h"
+#include "./phrase.h"
 #include "./scheduler.h"
 #include "./common.h"
 
 class Track {
  private:
-  NotesPhrase* phrase;
+  Phrase* phrase;
   Scheduler* scheduler;
  public:
   Track();
   int bus_id;
-  void set_phrase(NotesPhrase*);
-  NotesPhrase* get_phrase();
+  void set_phrase(Phrase*);
+  Phrase* get_phrase();
   void set_scheduler(Scheduler*);
   Scheduler* get_scheduler();
   double get_length();

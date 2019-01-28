@@ -7,15 +7,13 @@
 #include <vector>
 #include "./note.h"
 #include "./common.h"
+#include "./phrase.h"
 
-class NotesPhrase {
- private:
-  double length;
+class NotesPhrase : public Phrase {
  public:
   NotesPhrase();
   void add_note(double, std::shared_ptr<Note>);
-  double get_length();
   std::map<double, std::vector<std::shared_ptr<Note>>> notes;
   std::vector<std::pair<double, std::function<void(int, int)>>> get_events_in_range(
-    double, double);
+    double, double) override;
 };

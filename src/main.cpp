@@ -5,6 +5,7 @@
 
 #include "./scheduler.h"
 #include "./note.h"
+#include "./phrase.h"
 #include "./notes_phrase.h"
 #include "./track.h"
 #include "./common.h"
@@ -37,7 +38,12 @@ PYBIND11_MODULE(cpplib, m) {
     .def("get_duration", &Note::get_duration)
     .def("get_amp", &Note::get_amp);
 
-  py::class_<NotesPhrase>(m, "NotesPhrase")
+  py::class_<Phrase>(m, "Phrase")
+    .def(py::init<>())
+    .def("get_length", &Phrase::get_length)
+    .def("get_events_in_range", &Phrase::get_events_in_range);
+
+  py::class_<NotesPhrase, Phrase>(m, "NotesPhrase")
     .def(py::init<>())
     .def("add_note", &NotesPhrase::add_note)
     .def("get_length", &NotesPhrase::get_length)
