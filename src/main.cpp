@@ -5,8 +5,7 @@
 
 #include "./scheduler.h"
 #include "./note.h"
-#include "./event.h"
-#include "./phrase.h"
+#include "./notes_phrase.h"
 #include "./track.h"
 #include "./common.h"
 
@@ -32,23 +31,17 @@ PYBIND11_MODULE(cpplib, m) {
     .def("seconds_to_beats", &Scheduler::seconds_to_beats)
     .def("beats_to_seconds", &Scheduler::beats_to_seconds);
 
-  py::class_<Event, std::shared_ptr<Event>>(m, "Event")
-    .def("add_osc_message", &Event::add_osc_message)
-    .def("get_length", &Event::get_length);
-
-  py::class_<Note, Event, std::shared_ptr<Note>>(m, "Note")
+  py::class_<Note, std::shared_ptr<Note>>(m, "Note")
     .def(py::init<double, double, double>())
-    .def("add_osc_message", &Note::add_osc_message)
-    .def("get_length", &Note::get_length)
     .def("get_pitch", &Note::get_pitch)
     .def("get_duration", &Note::get_duration)
     .def("get_amp", &Note::get_amp);
 
-  py::class_<Phrase>(m, "Phrase")
+  py::class_<NotesPhrase>(m, "NotesPhrase")
     .def(py::init<>())
-    .def("add_event", &Phrase::add_event)
-    .def("get_length", &Phrase::get_length)
-    .def("get_events_in_range", &Phrase::get_events_in_range);
+    .def("add_note", &NotesPhrase::add_note)
+    .def("get_length", &NotesPhrase::get_length)
+    .def("get_events_in_range", &NotesPhrase::get_events_in_range);
 
   py::class_<Track>(m, "Track")
     .def(py::init<>())

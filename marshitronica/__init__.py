@@ -6,7 +6,7 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 from marshitronica.cpplib import Scheduler  # NOQA
-from marshitronica.cpplib import Phrase  # NOQA
+from marshitronica.cpplib import NotesPhrase  # NOQA
 from marshitronica.cpplib import Track  # NOQA
 from marshitronica.cpplib import Note  # NOQA
 from marshitronica.cpplib import Common  # NOQA

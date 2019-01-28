@@ -14,7 +14,7 @@ void NotesPhrase::add_note(double beats, std::shared_ptr<Note> note) {
     this->notes.insert(
       std::make_pair(beats, std::vector<std::shared_ptr<Note>>({note})));
   }
-  this->length = std::max(this->length, beats + note->get_length());
+  this->length = std::max(this->length, beats + note->get_duration());
 }
 
 double NotesPhrase::get_length() {

@@ -3,7 +3,7 @@ import time
 import marshitronica as mt
 
 
-phrase = mt.Phrase()
+phrase = mt.NotesPhrase()
 track = mt.Track()
 
 pitch = [60, 72, 71, 67, 69, 71, 72, 60, 69, 67,
@@ -15,7 +15,7 @@ beats = [0, 2, 4, 5, 5.5, 6, 7, 8, 10, 12,
 
 for p, d, b in zip(pitch, dur, beats):
     note = mt.Note(p, d, 1.0)
-    phrase.add_event(b, note)
+    phrase.add_note(b, note)
 
 track.set_phrase(phrase)
 
