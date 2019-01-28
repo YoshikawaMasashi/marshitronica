@@ -8,6 +8,7 @@ pybind11_add_module(cpplib
   src/scheduler.cpp
   src/note.cpp
   src/phrase.cpp
+  src/notes_phrase.cpp
   src/track.cpp
   src/common.cpp
   src/event.cpp)
