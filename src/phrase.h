@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <functional>
+#include "osc/OscOutboundPacketStream.h"
 
 class Phrase {
  protected:
@@ -12,6 +13,7 @@ class Phrase {
  public:
   Phrase();
   double get_length();
-  virtual std::vector<std::pair<double, std::function<void(int, int)>>>
-    get_events_in_range(double, double);
+  virtual std::vector<std::pair<double, std::function<
+    osc::OutboundPacketStream&(osc::OutboundPacketStream&, int, int, int)
+  >>> get_events_in_range(double, double);
 };
