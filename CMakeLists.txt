@@ -10,7 +10,8 @@ pybind11_add_module(cpplib
   src/phrase.cpp
   src/notes_phrase.cpp
   src/track.cpp
-  src/common.cpp)
+  src/common.cpp
+  TinySoundFont/tsf.h)
 
 include_directories(oscpack_1_1_0)
 add_subdirectory(oscpack_1_1_0)
