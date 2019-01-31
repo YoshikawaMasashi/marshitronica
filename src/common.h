@@ -5,7 +5,6 @@
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 #include "scheduler.h"
-#include "../TinySoundFont/tsf.h"
 
 
 class Common{

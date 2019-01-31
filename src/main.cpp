@@ -9,6 +9,7 @@
 #include "./notes_phrase.h"
 #include "./track.h"
 #include "./common.h"
+#include "./sound_font.h"
 
 namespace py = pybind11;
 
@@ -54,4 +55,7 @@ PYBIND11_MODULE(cpplib, m) {
     .def("set_phrase", &Track::set_phrase)
     .def("set_scheduler", &Track::set_scheduler)
     .def("play", &Track::play);
+
+    py::class_<SoundFont>(m, "SoundFont")
+      .def(py::init<std::string>());
 }
