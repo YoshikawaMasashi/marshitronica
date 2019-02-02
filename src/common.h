@@ -12,6 +12,7 @@ class Common{
   Common();
   int next_bus_id;
   int next_synth_id;
+  int next_bufnum;
   UdpTransmitSocket* transmit_socket;
 
  public:
@@ -24,7 +25,9 @@ class Common{
 
   int get_next_bus_id();
   int get_next_synth_id();
+  int get_next_bufnum();
   int increment_next_bus_id();
   int increment_next_synth_id();
+  int increment_next_bufnum();
   UdpTransmitSocket* get_transmit_socket();
 };
